@@ -1,6 +1,7 @@
 pub struct ParseConfig { 
     pub query: String, 
     pub filename: String,
+    pub is_case_sensitive: bool,
 }
 
 impl ParseConfig { 
@@ -16,9 +17,18 @@ cargo run [query] [filename]
     let query = &args[1];
     let filename = &args[2];
 
+    let case_sensitivity = match std::env::var("CASE_SENSITIVE") {
+      Ok(val) => {
+        val == "true"
+      },
+      Err(_) => false,
+        
+    };
+
     Ok(ParseConfig { 
         query: String::from(query), 
         filename: String::from(filename), 
+        is_case_sensitive: case_sensitivity,
     })
   }
 }
